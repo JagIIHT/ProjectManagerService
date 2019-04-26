@@ -1,0 +1,50 @@
+<div class="container-fluid">
+  <div class="form-group">
+    <span *ngIf=successMessage class="alert alert-success text-center" role="alert">{{successMessage}}</span>
+    <span *ngIf=failureMessage class="alert alert-danger text-center" role="alert">{{failureMessage}}</span>
+  </div>
+  <form>
+    <div class="form-group">
+      <div class="row">
+        <label for="task" class="col-md-2">Task:</label>
+        <input type="text" class="col-md-2" id="task" name="task" [(ngModel)]="task.task" style="background-color:#f7d7af">
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="row">
+        <label for="priority" class="col-md-2">Priority:</label>
+        <div class="col-md-3">
+          <output>0</output>
+          <input type="range" name="priority" min="0" max="30" [(ngModel)]="task.priority">
+          <output>30</output>
+          <br> Priority:&nbsp;&nbsp;{{task.priority}}
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="row">
+        <label for="ptask" class="col-md-2">Parent Task:</label>
+        <input type="text" class="col-md-2" id="ptask" name="ptask" [(ngModel)]="task.parent.task" style="background-color:#f7d7af">
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="row">
+        <label for="sdate" class="col-md-2">Start Date:</label>
+        <input type="date" class="col-md-2" id="sdate" name="sdate" [(ngModel)]="task.startDate" style="background-color:#f7d7af">
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="row">
+        <label for="edate" class="col-md-2">End Date:</label>
+        <input type="date" class="col-md-2" id="edate" name="edate" [(ngModel)]="task.endDate" style="background-color:#f7d7af">
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="row">
+        <div class="col-md-2"></div>
+        <button type="submit" value="Add Task" class="btn btn-primary" (click)="save($event)">Add Task</button>&nbsp;&nbsp;&nbsp;&nbsp;
+        <button type="reset" value="Reset" class="">Reset</button>
+      </div>
+    </div>
+  </form>
+</div>
