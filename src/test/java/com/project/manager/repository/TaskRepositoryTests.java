@@ -59,8 +59,8 @@ public class TaskRepositoryTests {
 
 	@Test
 	public void test3_FindById() {
-		this.taskRepository.save(this.task);
-		Task task = this.taskRepository.findById(3).get();
+		Task savedTask = this.taskRepository.save(this.task);
+		Task task = this.taskRepository.findById(savedTask.getId()).get();
 		assertThat(task.getTask().equalsIgnoreCase(this.task.getTask()));
 	}
 
