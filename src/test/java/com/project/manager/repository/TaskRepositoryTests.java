@@ -6,8 +6,10 @@ import static org.junit.Assert.assertTrue;
 import java.time.LocalDateTime;
 
 import org.junit.Before;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -17,6 +19,7 @@ import com.project.manager.model.Task;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TaskRepositoryTests {
 
 	@Autowired
@@ -36,13 +39,13 @@ public class TaskRepositoryTests {
 	}
 
 	@Test
-	public void testAddTask() {
+	public void test1_AddTask() {
 		Task task = this.taskRepository.save(this.task);
 		assertThat(task.getTask().equalsIgnoreCase(this.task.getTask()));
 	}
 
 	@Test
-	public void testFindAllTasks() {
+	public void test2_FindAllTasks() {
 		this.taskRepository.save(this.task);
 		Iterable<Task> tasks = this.taskRepository.findAll();
 		boolean[] pass = { false };
@@ -55,7 +58,7 @@ public class TaskRepositoryTests {
 	}
 
 	@Test
-	public void testFindById() {
+	public void test3_FindById() {
 		this.taskRepository.save(this.task);
 		Task task = this.taskRepository.findById(3).get();
 		assertThat(task.getTask().equalsIgnoreCase(this.task.getTask()));
