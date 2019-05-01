@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -23,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
 
+import com.project.manager.model.Parent;
 import com.project.manager.model.Task;
 import com.project.manager.service.ProjectManagerService;
 
@@ -36,13 +36,23 @@ public class TaskController {
 	private ProjectManagerService projectManagerService;
 
 	@GetMapping(value = "tasks", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Object> getAllTasks(Model model) {
+	public ResponseEntity<Object> getAllTasks() {
 		logger.info("<-- Inside getAllTasks -->");
 		List<Task> tasks = this.projectManagerService.getAllTasks();
 		if (tasks == null || tasks.isEmpty()) {
 			return new ResponseEntity<Object>(tasks, HttpStatus.NO_CONTENT);
 		}
 		return new ResponseEntity<Object>(tasks, HttpStatus.OK);
+	}
+
+	@GetMapping(value = "parent", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<Parent>> getAllParent() {
+		logger.info("<-- Inside getAllParent -->");
+		List<Parent> parentList = this.projectManagerService.getAllParent();
+		if (parentList == null || parentList.isEmpty()) {
+			return new ResponseEntity<List<Parent>>(parentList, HttpStatus.NO_CONTENT);
+		}
+		return new ResponseEntity<List<Parent>>(parentList, HttpStatus.OK);
 	}
 
 	@PutMapping(value = "/update", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -53,6 +63,11 @@ public class TaskController {
 	@PostMapping(value = "/add", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Task> addTask(@RequestBody Task task) {
 		return new ResponseEntity<Task>(this.projectManagerService.saveTask(task), HttpStatus.OK);
+	}
+
+	@PostMapping(value = "/add/parent", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Parent> addParentTask(@RequestBody Task task) {
+		return new ResponseEntity<Parent>(this.projectManagerService.saveParentTask(task), HttpStatus.OK);
 	}
 
 	@PutMapping(value = "/endtask/{id}", produces = MediaType.APPLICATION_JSON_VALUE)

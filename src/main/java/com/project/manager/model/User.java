@@ -5,7 +5,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Transient;
 
 @Entity
 public class User {
@@ -24,10 +23,6 @@ public class User {
 	private String projectId;
 	@Column(name = "Task_ID")
 	private String taskId;
-	@Transient
-	private Task task;
-	@Transient
-	private Project project;
 
 	public String getTaskId() {
 		return taskId;
@@ -35,22 +30,6 @@ public class User {
 
 	public void setTaskId(String taskId) {
 		this.taskId = taskId;
-	}
-
-	public Project getProject() {
-		return project;
-	}
-
-	public void setProject(Project project) {
-		this.project = project;
-	}
-
-	public Task getTask() {
-		return task;
-	}
-
-	public void setTask(Task task) {
-		this.task = task;
 	}
 
 	public Long getId() {

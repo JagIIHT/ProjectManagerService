@@ -3,8 +3,6 @@ package com.project.manager.service;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -41,7 +39,13 @@ public class ProjectManagerServiceImpl implements ProjectManagerService {
 
 	@Override
 	public Task saveTask(Task task) {
-		return this.taskRepository.save(task);
+		Task savedTask = this.taskRepository.save(task);
+		User user = task.getUser();
+		if (user != null && user.getFirstName() != null) {
+			user.setTaskId(String.valueOf(task.getId()));
+			this.userRepository.save(user);
+		}
+		return savedTask;
 	}
 
 	@Override
@@ -101,5 +105,17 @@ public class ProjectManagerServiceImpl implements ProjectManagerService {
 
 	public List<User> getUserListByProjectId(Long projectId) {
 		return this.userRepository.findOneUserByProjectId(String.valueOf(projectId));
+	}
+
+	@Override
+	public List<Parent> getAllParent() {
+		return (List<Parent>) this.ParentTaskRepository.findAll();
+	}
+
+	@Override
+	public Parent saveParentTask(Task task) {
+		Parent parent = new Parent();
+		parent.setTask(task.getTask());
+		return this.ParentTaskRepository.save(parent);
 	}
 }

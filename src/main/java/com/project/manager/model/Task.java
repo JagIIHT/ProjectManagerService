@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 
 @Entity(name = "Task")
 public class Task {
@@ -18,19 +19,37 @@ public class Task {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "task_id")
 	private Integer id;
-	@ManyToOne(cascade = CascadeType.ALL)
+
+	@ManyToOne(cascade = CascadeType.MERGE)
+	@JoinColumn(name = "parent_id")
 	private Parent parent;
+
 	@Column(name = "task")
 	private String task;
+
 	@Column(name = "priority")
 	private Integer priority;
+
 	@Column(name = "start_date")
 	private LocalDate startDate;
+
 	@Column(name = "end_date")
 	private LocalDate endDate;
-	@ManyToOne
+
+	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "project_id")
 	private Project project;
+
+	@Transient
+	private User user;
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
 
 	public Project getProject() {
 		return project;

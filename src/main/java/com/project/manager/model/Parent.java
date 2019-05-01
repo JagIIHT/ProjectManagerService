@@ -8,7 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
@@ -26,8 +25,7 @@ public class Parent {
 	@Column(name = "parent_task", unique = true)
 	private String task;
 	@JsonIgnore
-	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name = "parent_id")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "project")
 	private List<Task> tasks;
 
 	public List<Task> getTasks() {

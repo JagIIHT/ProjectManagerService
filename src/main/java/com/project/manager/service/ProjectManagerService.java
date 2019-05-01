@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.project.manager.model.Parent;
 import com.project.manager.model.Project;
 import com.project.manager.model.Task;
 import com.project.manager.model.User;
@@ -12,6 +13,8 @@ import com.project.manager.model.User;
 public interface ProjectManagerService {
 
 	List<Task> getAllTasks();
+
+	List<Parent> getAllParent();
 
 	Task saveTask(Task task);
 
@@ -26,4 +29,6 @@ public interface ProjectManagerService {
 	User saveOrUpdateUser(User user);
 
 	List<User> getAllUsers();
+
+	Parent saveParentTask(Task task);
 }
