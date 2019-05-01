@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity(name = "Task")
@@ -27,6 +28,17 @@ public class Task {
 	private LocalDate startDate;
 	@Column(name = "end_date")
 	private LocalDate endDate;
+	@ManyToOne
+	@JoinColumn(name = "project_id")
+	private Project project;
+
+	public Project getProject() {
+		return project;
+	}
+
+	public void setProject(Project project) {
+		this.project = project;
+	}
 
 	public Parent getParent() {
 		return parent;

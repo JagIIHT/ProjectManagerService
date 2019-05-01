@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
 
 import com.project.manager.model.Task;
-import com.project.manager.service.TaskService;
+import com.project.manager.service.ProjectManagerService;
 
 @RestController
 @RequestMapping("/taskservice/")
@@ -33,12 +33,12 @@ public class TaskController {
 
 	private static final Logger logger = LoggerFactory.getLogger(TaskController.class);
 	@Autowired
-	private TaskService taskService;
+	private ProjectManagerService projectManagerService;
 
 	@GetMapping(value = "tasks", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Object> getAllTasks(Model model) {
 		logger.info("<-- Inside getAllTasks -->");
-		List<Task> tasks = this.taskService.getAllTasks();
+		List<Task> tasks = this.projectManagerService.getAllTasks();
 		if (tasks == null || tasks.isEmpty()) {
 			return new ResponseEntity<Object>(tasks, HttpStatus.NO_CONTENT);
 		}
@@ -47,22 +47,22 @@ public class TaskController {
 
 	@PutMapping(value = "/update", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Task> updateTask(@RequestBody Task task) {
-		return new ResponseEntity<Task>(this.taskService.saveTask(task), HttpStatus.OK);
+		return new ResponseEntity<Task>(this.projectManagerService.saveTask(task), HttpStatus.OK);
 	}
 
 	@PostMapping(value = "/add", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Task> addTask(@RequestBody Task task) {
-		return new ResponseEntity<Task>(this.taskService.saveTask(task), HttpStatus.OK);
+		return new ResponseEntity<Task>(this.projectManagerService.saveTask(task), HttpStatus.OK);
 	}
 
 	@PutMapping(value = "/endtask/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Task> updateEndDate(@PathVariable(name = "id") String taskId) {
-		return new ResponseEntity<Task>(this.taskService.endTask(taskId), HttpStatus.OK);
+		return new ResponseEntity<Task>(this.projectManagerService.endTask(taskId), HttpStatus.OK);
 	}
 
 	@GetMapping(value = "/task/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Task> getTask(@PathVariable(name = "id") String taskId) {
-		return new ResponseEntity<Task>(this.taskService.getTaskById(taskId), HttpStatus.OK);
+		return new ResponseEntity<Task>(this.projectManagerService.getTaskById(taskId), HttpStatus.OK);
 	}
 
 	@ExceptionHandler(value = { HttpMessageNotReadableException.class, MethodArgumentNotValidException.class })

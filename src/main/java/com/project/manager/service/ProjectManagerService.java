@@ -4,10 +4,11 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.project.manager.model.Project;
 import com.project.manager.model.Task;
 
 @Service
-public interface TaskService {
+public interface ProjectManagerService {
 
 	List<Task> getAllTasks();
 
@@ -16,4 +17,8 @@ public interface TaskService {
 	Task getTaskById(String id);
 
 	Task endTask(String taskId);
+
+	Project saveOrUpdateProject(Project project);
+
+	List<Project> getProjectList();
 }

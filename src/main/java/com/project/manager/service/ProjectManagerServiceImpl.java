@@ -9,18 +9,27 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.project.manager.model.Parent;
+import com.project.manager.model.Project;
 import com.project.manager.model.Task;
 import com.project.manager.repository.ParentTaskRepository;
+import com.project.manager.repository.ProjectRepository;
 import com.project.manager.repository.TaskRepository;
+import com.project.manager.repository.UserRepository;
 
 @Service
-public class TaskServiceImpl implements TaskService {
+public class ProjectManagerServiceImpl implements ProjectManagerService {
 
 	@Autowired
 	private TaskRepository taskRepository;
 
 	@Autowired
 	private ParentTaskRepository ParentTaskRepository;
+
+	@Autowired
+	private ProjectRepository projectRepository;
+
+	@Autowired
+	private UserRepository userRepository;
 
 	@Override
 	public List<Task> getAllTasks() {
@@ -54,6 +63,16 @@ public class TaskServiceImpl implements TaskService {
 			});
 		}
 		return this.taskRepository.save(task);
+	}
+
+	@Override
+	public Project saveOrUpdateProject(Project project) {
+		return this.projectRepository.save(project);
+	}
+
+	@Override
+	public List<Project> getProjectList() {
+		return this.projectRepository.findAll();
 	}
 
 }

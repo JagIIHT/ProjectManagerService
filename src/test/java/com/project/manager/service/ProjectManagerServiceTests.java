@@ -25,19 +25,19 @@ import com.project.manager.repository.ParentTaskRepository;
 import com.project.manager.repository.TaskRepository;
 
 @RunWith(SpringRunner.class)
-public class TaskServiceTests {
+public class ProjectManagerServiceTests {
 
 	@TestConfiguration
 	static class LibraryServiceTestContextConfiguration {
 
 		@Bean
-		public TaskService taskService() {
-			return new TaskServiceImpl();
+		public ProjectManagerService taskService() {
+			return new ProjectManagerServiceImpl();
 		}
 	}
 
 	@Autowired
-	private TaskService taskService;
+	private ProjectManagerService projectManagerService;
 	@MockBean
 	private TaskRepository taskRepository;
 	@MockBean
@@ -66,7 +66,7 @@ public class TaskServiceTests {
 
 	@Test
 	public void testGetAllTasks() {
-		List<Task> tasks = this.taskService.getAllTasks();
+		List<Task> tasks = this.projectManagerService.getAllTasks();
 		boolean[] pass = { false };
 		tasks.forEach(t -> {
 			if (t.getTask().equalsIgnoreCase(this.task.getTask())) {
@@ -78,21 +78,21 @@ public class TaskServiceTests {
 
 	@Test
 	public void testGetTaskById() {
-		Task task = this.taskService.saveTask(this.task);
-		Task taskFound = this.taskService.getTaskById(String.valueOf(task.getId()));
+		Task task = this.projectManagerService.saveTask(this.task);
+		Task taskFound = this.projectManagerService.getTaskById(String.valueOf(task.getId()));
 		assertThat(taskFound.getTask().equalsIgnoreCase(this.task.getTask()));
 	}
 	
 	@Test
 	public void testSaveTask() {
-		Task task = this.taskService.saveTask(this.task);
+		Task task = this.projectManagerService.saveTask(this.task);
 		assertThat(task.getTask().equalsIgnoreCase(this.task.getTask()));
 	}
 	
 	@Test
 	public void testEndTask() {
-		Task task = this.taskService.saveTask(this.task);
-		Task taskEnded = this.taskService.endTask(String.valueOf(task.getId()));
+		Task task = this.projectManagerService.saveTask(this.task);
+		Task taskEnded = this.projectManagerService.endTask(String.valueOf(task.getId()));
 		LocalDate currentDate = LocalDate.now();
 		assertThat(currentDate.compareTo(taskEnded.getEndDate()) == 0);
 	}
