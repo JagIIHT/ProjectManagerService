@@ -38,7 +38,7 @@ public class UserController {
 		return new ResponseEntity<List<User>>(users, HttpStatus.OK);
 	}
 
-	@PostMapping(value = "/save", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = "/save", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<User> saveOrUpdate(@RequestBody User user) {
 		return new ResponseEntity<User>(this.projectManagerService.saveOrUpdateUser(user), HttpStatus.OK);
 	}

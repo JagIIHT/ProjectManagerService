@@ -27,12 +27,12 @@ public class ProjectController {
 	@Autowired
 	private ProjectManagerService projectManagerService;
 
-	@GetMapping(value = "/projects", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/projects", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<List<Project>> getAllProjects() {
 		return new ResponseEntity<List<Project>>(this.projectManagerService.getProjectList(), HttpStatus.OK);
 	}
 
-	@PostMapping(value = "/save", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = "/save", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<Project> saveOrUpdate(@RequestBody Project project) {
 		return new ResponseEntity<Project>(this.projectManagerService.saveOrUpdateProject(project), HttpStatus.OK);
 	}

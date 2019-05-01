@@ -10,5 +10,5 @@ import com.project.manager.model.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
-	public List<User> findByProjectId(String projectId);
+	public List<User> findOneUserByProjectId(String projectId);
 }

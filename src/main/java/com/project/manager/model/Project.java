@@ -8,8 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
 @Entity
@@ -29,9 +27,10 @@ public class Project {
 	private LocalDate endDate;
 	@Transient
 	private String status;
-	@OneToMany
-	@JoinColumn(name = "Project_ID")
-	private List<User> user;
+	@Transient
+	private User user;
+	@Transient
+	private List<User> users;
 
 	public long getProjectId() {
 		return projectId;
@@ -81,11 +80,19 @@ public class Project {
 		this.status = status;
 	}
 
-	public List<User> getUser() {
+	public List<User> getUsers() {
+		return users;
+	}
+
+	public void setUsers(List<User> users) {
+		this.users = users;
+	}
+
+	public User getUser() {
 		return user;
 	}
 
-	public void setUser(List<User> user) {
+	public void setUser(User user) {
 		this.user = user;
 	}
 

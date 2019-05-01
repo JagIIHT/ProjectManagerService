@@ -3,6 +3,8 @@ package com.project.manager.service;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -68,25 +70,36 @@ public class ProjectManagerServiceImpl implements ProjectManagerService {
 
 	@Override
 	public Project saveOrUpdateProject(Project project) {
-		return this.projectRepository.save(project);
+		this.projectRepository.save(project);
+		User user = project.getUser();
+		user.setProjectId(String.valueOf(project.getProjectId()));
+		this.userRepository.save(user);
+		return project;
 	}
 
 	@Override
 	public List<Project> getProjectList() {
-		return this.projectRepository.findAll();
+		List<Project> projects = this.projectRepository.findAll();
+		projects.forEach(p -> {
+			List<User> users = this.getUserListByProjectId(p.getProjectId());
+			if (users != null && !users.isEmpty()) {
+				p.setUser(users.get(0));
+			}
+		});
+		return projects;
 	}
 
 	@Override
 	public User saveOrUpdateUser(User user) {
 		return this.userRepository.save(user);
 	}
-	
+
 	@Override
 	public List<User> getAllUsers() {
 		return this.userRepository.findAll();
 	}
-	
-	public List<User> getUserListByProjectId(String projectId) {
-		return this.userRepository.findByProjectId(projectId);
+
+	public List<User> getUserListByProjectId(Long projectId) {
+		return this.userRepository.findOneUserByProjectId(String.valueOf(projectId));
 	}
 }
