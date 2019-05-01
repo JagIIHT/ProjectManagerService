@@ -29,6 +29,7 @@ public class ProjectController {
 
 	@GetMapping(value = "/projects", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<List<Project>> getAllProjects() {
+		logger.info("<-- Inside getAllProjects -->");
 		return new ResponseEntity<List<Project>>(this.projectManagerService.getProjectList(), HttpStatus.OK);
 	}
 

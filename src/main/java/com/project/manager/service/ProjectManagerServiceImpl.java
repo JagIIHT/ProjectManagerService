@@ -1,6 +1,7 @@
 package com.project.manager.service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,7 +35,16 @@ public class ProjectManagerServiceImpl implements ProjectManagerService {
 
 	@Override
 	public List<Task> getAllTasks() {
-		return (List<Task>) this.taskRepository.findAll();
+		List<Task> tasks = (List<Task>) this.taskRepository.findAll();
+		tasks.forEach(task -> {
+			if (task.getEndDate() != null) {
+				task.setStatus((task.getEndDate().isBefore(LocalDateTime.now().toLocalDate())
+						|| task.getEndDate().isEqual(LocalDateTime.now().toLocalDate())) ? "Completed" : "In-Progress");
+			} else {
+				task.setStatus("In-Progress");
+			}
+		});
+		return tasks;
 	}
 
 	@Override
@@ -89,6 +99,8 @@ public class ProjectManagerServiceImpl implements ProjectManagerService {
 			if (users != null && !users.isEmpty()) {
 				p.setUser(users.get(0));
 			}
+			p.setStatus((p.getEndDate().isBefore(LocalDateTime.now().toLocalDate())
+					|| p.getEndDate().isEqual(LocalDateTime.now().toLocalDate())) ? "Completed" : "In-Progress");
 		});
 		return projects;
 	}
