@@ -28,9 +28,11 @@ public class ParentRepositoryTests {
 	public void setUp() {
 		Parent parent = new Parent();
 		parent.setTask("Parent1");
+		parent.setId(1);
 		this.task = new Task();
 		this.task.setTask("Task1");
 		this.task.setPriority(3);
+		this.task.setId(1);
 		this.task.setStartDate(LocalDateTime.of(2011, 01, 22, 0, 0).toLocalDate());
 		this.task.setEndDate(LocalDateTime.of(2020, 01, 22, 0, 0).toLocalDate());
 		this.task.setParent(parent);
