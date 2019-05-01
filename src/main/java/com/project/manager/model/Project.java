@@ -1,12 +1,15 @@
 package com.project.manager.model;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
 @Entity
@@ -26,8 +29,9 @@ public class Project {
 	private LocalDate endDate;
 	@Transient
 	private String status;
-	@Transient
-	private User user;
+	@OneToMany
+	@JoinColumn(name = "Project_ID")
+	private List<User> user;
 
 	public long getProjectId() {
 		return projectId;
@@ -77,11 +81,11 @@ public class Project {
 		this.status = status;
 	}
 
-	public User getUser() {
+	public List<User> getUser() {
 		return user;
 	}
 
-	public void setUser(User user) {
+	public void setUser(List<User> user) {
 		this.user = user;
 	}
 

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.project.manager.model.Parent;
 import com.project.manager.model.Project;
 import com.project.manager.model.Task;
+import com.project.manager.model.User;
 import com.project.manager.repository.ParentTaskRepository;
 import com.project.manager.repository.ProjectRepository;
 import com.project.manager.repository.TaskRepository;
@@ -75,4 +76,17 @@ public class ProjectManagerServiceImpl implements ProjectManagerService {
 		return this.projectRepository.findAll();
 	}
 
+	@Override
+	public User saveOrUpdateUser(User user) {
+		return this.userRepository.save(user);
+	}
+	
+	@Override
+	public List<User> getAllUsers() {
+		return this.userRepository.findAll();
+	}
+	
+	public List<User> getUserListByProjectId(String projectId) {
+		return this.userRepository.findByProjectId(projectId);
+	}
 }

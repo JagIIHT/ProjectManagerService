@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.project.manager.model.Project;
 import com.project.manager.model.Task;
+import com.project.manager.model.User;
 
 @Service
 public interface ProjectManagerService {
@@ -21,4 +22,8 @@ public interface ProjectManagerService {
 	Project saveOrUpdateProject(Project project);
 
 	List<Project> getProjectList();
+
+	User saveOrUpdateUser(User user);
+
+	List<User> getAllUsers();
 }
