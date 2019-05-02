@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.project.manager.model.Parent;
 import com.project.manager.model.Task;
 
@@ -26,6 +28,9 @@ public class ParentRepositoryTests {
 
 	@Before
 	public void setUp() {
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.registerModule(new JavaTimeModule());
+		
 		Parent parent = new Parent();
 		parent.setTask("Parent1");
 		parent.setId(1);

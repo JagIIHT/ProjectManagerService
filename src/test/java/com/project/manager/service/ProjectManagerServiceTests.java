@@ -3,8 +3,8 @@ package com.project.manager.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -17,8 +17,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.env.Environment;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.project.manager.model.Parent;
 import com.project.manager.model.Project;
 import com.project.manager.model.Task;
@@ -29,7 +36,12 @@ import com.project.manager.repository.TaskRepository;
 import com.project.manager.repository.UserRepository;
 
 @RunWith(SpringRunner.class)
+@ContextConfiguration
+@TestPropertySource("/application-test.properties")
 public class ProjectManagerServiceTests {
+
+	@Autowired
+	private Environment env;
 
 	@TestConfiguration
 	static class ProjectManagerServiceTestsContextConfiguration {
@@ -56,41 +68,25 @@ public class ProjectManagerServiceTests {
 	private Project project;
 
 	@Before
-	public void setUp() {
-		this.parent = new Parent();
+	public void setUp() throws JsonParseException, JsonMappingException, IOException {
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.registerModule(new JavaTimeModule());
+
+		this.parent = mapper.readValue(this.env.getProperty("parent.json"), Parent.class);
+		this.user = mapper.readValue(this.env.getProperty("user.json"), User.class);
+		this.project = mapper.readValue(this.env.getProperty("project.json"), Project.class);
+		this.task = mapper.readValue(this.env.getProperty("task.json"), Task.class);
+
 		List<Task> tasks = new ArrayList<Task>();
 		List<Parent> parents = new ArrayList<Parent>();
 		List<Project> projects = new ArrayList<Project>();
 		List<User> users = new ArrayList<User>();
-
-		this.parent.setTask("Parent1");
-
-		this.user = new User();
-		this.user.setEmployeeId("1234");
-		this.user.setFirstName("User");
-		this.user.setLastName("Name");
-
-		this.project = new Project();
-		this.project.setEndDate(LocalDateTime.of(2020, 07, 01, 0, 0).toLocalDate());
-		this.project.setName("Project1");
-		this.project.setPriority(5);
-		this.project.setStartDate(LocalDateTime.now().toLocalDate());
-		this.project.setUser(this.user);
-
-		this.task = new Task();
-		this.task.setTask("Task1");
-		this.task.setPriority(3);
-		this.task.setId(1);
-		this.task.setUser(this.user);
-		this.task.setStartDate(LocalDateTime.of(2011, 01, 22, 0, 0).toLocalDate());
-		this.task.setEndDate(LocalDateTime.of(2070, 01, 22, 0, 0).toLocalDate());
-		this.task.setParent(this.parent);
+		
 		tasks.add(this.task);
-
-		this.parent.setTasks(tasks);
 		parents.add(this.parent);
 		projects.add(this.project);
 		users.add(this.user);
+		this.parent.setTasks(tasks);
 
 		Mockito.when(this.taskRepository.findAll()).thenReturn(tasks);
 		Mockito.when(this.taskRepository.save(this.task)).thenReturn(this.task);
