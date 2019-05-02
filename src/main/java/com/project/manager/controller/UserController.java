@@ -29,8 +29,8 @@ public class UserController {
 	private ProjectManagerService projectManagerService;
 
 	@GetMapping(value = "users", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<User>> getAllTasks(Model model) {
-		logger.info("<-- Inside getAllTasks -->");
+	public ResponseEntity<List<User>> getAllUsers(Model model) {
+		logger.info("<-- Inside getAllUsers -->");
 		List<User> users = this.projectManagerService.getAllUsers();
 		if (users == null || users.isEmpty()) {
 			return new ResponseEntity<List<User>>(users, HttpStatus.NO_CONTENT);

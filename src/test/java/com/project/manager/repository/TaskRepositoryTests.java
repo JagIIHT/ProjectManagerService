@@ -3,7 +3,7 @@ package com.project.manager.repository;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertTrue;
 
-import java.time.LocalDateTime;
+import java.io.IOException;
 
 import org.junit.Before;
 import org.junit.FixMethodOrder;
@@ -12,37 +12,35 @@ import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.core.env.Environment;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.project.manager.model.Parent;
 import com.project.manager.model.Task;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@ContextConfiguration
+@TestPropertySource("/application-test.properties")
 public class TaskRepositoryTests {
 
 	@Autowired
 	private TaskRepository taskRepository;
+	@Autowired
+	private Environment env;
 	private Task task;
 
 	@Before
-	public void setUp() {
+	public void setUp() throws JsonParseException, JsonMappingException, IOException {
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.registerModule(new JavaTimeModule());
-		
-		Parent parent = new Parent();
-		parent.setTask("Parent1");
-		parent.setId(1);
-		this.task = new Task();
-		this.task.setTask("Task1");
-		this.task.setId(1);
-		this.task.setPriority(3);
-		this.task.setStartDate(LocalDateTime.of(2011, 01, 22, 0, 0).toLocalDate());
-		this.task.setEndDate(LocalDateTime.of(2020, 01, 22, 0, 0).toLocalDate());
-		this.task.setParent(parent);
+		this.task = mapper.readValue(this.env.getProperty("task.json"), Task.class);
 	}
 
 	@Test
